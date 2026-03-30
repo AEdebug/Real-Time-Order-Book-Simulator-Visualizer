@@ -1,0 +1,18 @@
+{
+  "name": "orderbook-simulator",
+  "version": "1.0.0",
+  "description": "Real-Time Order Book Simulator & Visualizer — connects to Binance WebSocket feed, maintains a custom limit order book engine, and visualizes market microstructure in a real-time dashboard.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "keywords": ["orderbook", "hft", "trading", "binance", "websocket", "market-microstructure"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0",
+    "socket.io": "^4.7.5",
+    "ws": "^8.17.0"
+  }
+}

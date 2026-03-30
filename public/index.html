@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Real-time order book simulator and visualizer with live Binance market data, depth charts, and trade flow analysis.">
+  <title>Order Book Simulator</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+</head>
+<body>
+
+<div id="app">
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">📊</span>
+        <span>ORDERBOOK</span>
+      </div>
+
+      <div class="symbol-selector">
+        <select id="symbol-select">
+          <option value="btcusdt">BTC/USDT</option>
+          <option value="ethusdt">ETH/USDT</option>
+          <option value="bnbusdt">BNB/USDT</option>
+          <option value="solusdt">SOL/USDT</option>
+          <option value="xrpusdt">XRP/USDT</option>
+          <option value="adausdt">ADA/USDT</option>
+          <option value="dogeusdt">DOGE/USDT</option>
+          <option value="avaxusdt">AVAX/USDT</option>
+          <option value="dotusdt">DOT/USDT</option>
+          <option value="linkusdt">LINK/USDT</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="header-stats">
+      <div class="header-stat">
+        <span class="header-stat-label">Mid Price</span>
+        <span class="header-stat-value price-neutral" id="h-mid-price">—</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-label">Spread</span>
+        <span class="header-stat-value" id="h-spread" style="color: var(--yellow)">—</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-label">Spread BPS</span>
+        <span class="header-stat-value" id="h-spread-bps" style="color: var(--yellow-dim)">—</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-label">Imbalance</span>
+        <span class="header-stat-value" id="h-imbalance">—</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-label">Updates</span>
+        <span class="header-stat-value" id="h-updates" style="color: var(--text-secondary)">0</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-label" style="color:var(--blue)">ENGINE LATENCY</span>
+        <span class="header-stat-value" id="h-latency" style="color: var(--blue)">0 μs</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="connection-status disconnected" id="connection-status">
+        <span class="status-dot"></span>
+        <span id="status-text">Connecting...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main Content Grid ── -->
+  <div class="main-content">
+
+    <!-- Order Book Ladder -->
+    <div class="card orderbook-ladder">
+      <div class="card-header">
+        <span class="card-title">Order Book</span>
+        <span class="card-badge" id="book-levels">20 levels</span>
+      </div>
+      <div class="ladder-columns">
+        <span>Qty</span>
+        <span>Price</span>
+        <span>Total</span>
+      </div>
+      <div class="card-body">
+        <div class="ladder-scroll" id="ladder-scroll">
+          <div class="ladder-asks" id="ladder-asks"></div>
+          <div class="ladder-spread" id="ladder-spread">
+            <span class="spread-value">—</span>
+            <span class="spread-label">spread</span>
+          </div>
+          <div class="ladder-bids" id="ladder-bids"></div>
+        </div>
+        <div class="loading-overlay" id="book-loading">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Waiting for market data...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Depth Chart -->
+    <div class="card depth-chart">
+      <div class="card-header">
+        <span class="card-title">Market Depth</span>
+        <span class="card-badge" id="depth-badge">cumulative</span>
+      </div>
+      <div class="card-body">
+        <canvas id="depth-canvas"></canvas>
+        <div class="loading-overlay" id="depth-loading">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Loading depth chart...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trade Tape -->
+    <div class="card trade-tape">
+      <div class="card-header">
+        <span class="card-title">Trades</span>
+        <span class="card-badge" id="trade-count">0</span>
+      </div>
+      <div class="trade-columns">
+        <span>Time</span>
+        <span>Price</span>
+        <span>Qty</span>
+        <span>Side</span>
+      </div>
+      <div class="card-body">
+        <div class="trade-scroll" id="trade-scroll"></div>
+      </div>
+    </div>
+
+    <!-- Spread Chart -->
+    <div class="card chart-spread">
+      <div class="card-header">
+        <span class="card-title">Spread History</span>
+        <span class="card-badge" id="spread-badge">BPS</span>
+      </div>
+      <div class="card-body">
+        <canvas id="spread-canvas" class="chart-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Imbalance Chart -->
+    <div class="card chart-imbalance">
+      <div class="card-header">
+        <span class="card-title">Order Book Imbalance</span>
+        <span class="card-badge" id="imbalance-badge">top 5 levels</span>
+      </div>
+      <div class="card-body">
+        <div class="imbalance-container">
+          <div class="imbalance-gauge">
+            <div class="gauge-bar">
+              <div class="gauge-fill-green" id="gauge-green"></div>
+              <div class="gauge-fill-red" id="gauge-red"></div>
+              <div class="gauge-center"></div>
+            </div>
+            <div class="gauge-labels">
+              <span class="buy-label" id="gauge-buy-pct">50%</span>
+              <span class="sell-label" id="gauge-sell-pct">50%</span>
+            </div>
+          </div>
+          <div style="flex:1; position:relative;">
+            <canvas id="imbalance-canvas" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Panel (Simulation) -->
+    <div class="card order-panel" id="order-panel">
+      <div class="card-header">
+        <span class="card-title">Place Order</span>
+        <span class="card-badge" style="color:var(--blue)">SIMULATION</span>
+      </div>
+      <div class="card-body order-box">
+        <div class="order-tabs">
+          <div class="side-tabs">
+            <button class="side-btn buy active" data-side="buy">BUY</button>
+            <button class="side-btn sell" data-side="sell">SELL</button>
+          </div>
+          <div class="type-tabs">
+            <button class="type-btn active" data-type="limit">Limit</button>
+            <button class="type-btn" data-type="market">Market</button>
+          </div>
+        </div>
+
+        <div class="order-inputs">
+          <div class="input-group" id="price-group">
+            <label>Price (USDT)</label>
+            <input type="number" id="order-price" placeholder="0.00" step="0.1">
+          </div>
+          <div class="input-group">
+            <label>Amount</label>
+            <input type="number" id="order-qty" placeholder="0.00" step="0.01">
+          </div>
+        </div>
+
+        <button class="submit-btn buy" id="submit-order">BUY Limit</button>
+
+        <div class="orders-section">
+          <div class="section-title">Active Orders</div>
+          <div class="orders-list" id="active-orders">
+            <div class="empty-state">No active orders</div>
+          </div>
+        </div>
+
+        <div class="orders-section">
+          <div class="section-title">Session P&L</div>
+          <div class="orders-list">
+            <div class="active-order" style="background: rgba(15,23,42,0.8); justify-content: center; padding: 10px;">
+              <span id="pnl-display" style="font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--text-secondary);">
+                $0.00
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Socket.IO -->
+<script src="/socket.io/socket.io.js"></script>
+<!-- App Modules -->
+<script src="js/utils.js"></script>
+<script src="js/orderbook-view.js"></script>
+<script src="js/depth-chart.js"></script>
+<script src="js/trade-tape.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/order-panel.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
