@@ -40,8 +40,6 @@ Built for **High-Frequency Trading (HFT)** and quantitative development demonstr
 
 *No API keys are required as this uses the public Binance WebSocket streams.*
 
-## Technical Highlights for Quant/HFT Roles
-
 *   **Custom Data Structures**: `server/orderbook-engine.js` implements a bespoke price-time priority matching engine rather than relying on out-of-the-box libraries.
 *   **Event-Driven Architecture**: Fast asynchronous data pipelines passing data from Binance WS -> Node Event Emitters -> Engine Processing -> Express/Socket.IO emit -> Frontend receive.
 *   **Microstructure Signals**: Includes raw implementations for common HFT signals like the Order Book Imbalance ratio (`(bidVol - askVol) / (bidVol + askVol)`). 
