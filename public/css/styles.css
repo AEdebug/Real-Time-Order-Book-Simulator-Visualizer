@@ -970,3 +970,70 @@ body {
   border-left: 3px solid var(--accent);
   color: var(--accent);
 }
+
+/* ── Responsive: tablet — the order panel was never repositioned out of
+   its desktop grid-column:3, so below 900px it overflowed the viewport
+   horizontally instead of wrapping. Give it its own full-width row. ── */
+@media (max-width: 900px) {
+  .main-content {
+    grid-template-rows: 1fr 1fr 200px auto;
+  }
+
+  .order-panel {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    height: auto;
+  }
+
+  .order-box {
+    max-height: none;
+  }
+}
+
+/* ── Responsive: phone — stack everything into one scrollable column
+   instead of squeezing a desktop grid into a narrow viewport. ── */
+@media (max-width: 640px) {
+  html, body {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  #app {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .header-left {
+    gap: 10px;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .orderbook-ladder { height: 380px; }
+  .depth-chart { height: 260px; }
+  .trade-tape { height: 300px; }
+  .chart-spread { height: 200px; }
+  .chart-imbalance { height: 220px; }
+
+  .order-panel {
+    height: auto;
+  }
+
+  .order-box {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
