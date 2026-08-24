@@ -223,9 +223,13 @@ class OrderBookEngine {
   _processQueuePosition(tradePrice, tradeQty, tradeSide) {
     for (const [, order] of this.simulatedOrders) {
       if (order.status === 'filled' || order.status === 'cancelled') continue;
-      
-      // If a trade happens at the exact same price and side as our resting limit order
-      if (order.type === 'limit' && order.side === tradeSide && order.price === tradePrice) {
+
+      // A resting order's queue is consumed by aggressor trades on the
+      // OPPOSITE side at the same price — e.g. a resting buy (bid) sits in
+      // the book waiting for sellers to trade into it, so only 'sell'-side
+      // prints erode its queue position (Binance's isBuyerMaker flag means
+      // the trade's `side` here is the taker/aggressor side).
+      if (order.type === 'limit' && order.side !== tradeSide && order.price === tradePrice) {
         // Reduce the queue ahead of us
         order.queueAhead -= tradeQty;
 
@@ -254,9 +258,12 @@ class OrderBookEngine {
     const parsedPrice = parseFloat(price);
     const order = new Order(side, parsedPrice, parseFloat(quantity), 'limit', 'simulated');
     
-    // Determine realistic queue position
-    const oppositeArray = side === 'buy' ? this._sortedBids : this._sortedAsks;
-    const existingLevel = oppositeArray.find(l => l.price === parsedPrice);
+    // Determine realistic queue position: an order joins the back of the
+    // queue at its own price level, so queue-ahead comes from the SAME side
+    // of the book (other resting buys for a buy order, other resting sells
+    // for a sell order) — not the opposite side we'd match against.
+    const sameSideArray = side === 'buy' ? this._sortedBids : this._sortedAsks;
+    const existingLevel = sameSideArray.find(l => l.price === parsedPrice);
     order.queueAhead = existingLevel ? existingLevel.totalQuantity : 0;
 
     this.simulatedOrders.set(order.id, order);

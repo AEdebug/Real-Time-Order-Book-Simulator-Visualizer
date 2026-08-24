@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "node --watch server/index.js"
+    "dev": "node --watch server/index.js",
+    "test": "jest"
   },
   "keywords": ["orderbook", "hft", "trading", "binance", "websocket", "market-microstructure"],
   "author": "",
@@ -14,5 +15,8 @@
     "express": "^4.21.0",
     "socket.io": "^4.7.5",
     "ws": "^8.17.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

@@ -175,11 +175,29 @@ io.on('connection', (socket) => {
     console.log(`[Server] Order received:`, data);
 
     try {
+      const side = data && data.side;
+      const type = data && data.type;
+      const quantity = Number(data && data.quantity);
+
+      if (side !== 'buy' && side !== 'sell') {
+        throw new Error('Invalid order side: must be "buy" or "sell"');
+      }
+      if (type !== 'market' && type !== 'limit') {
+        throw new Error('Invalid order type: must be "market" or "limit"');
+      }
+      if (!Number.isFinite(quantity) || quantity <= 0) {
+        throw new Error('Invalid quantity: must be a positive number');
+      }
+
       let result;
-      if (data.type === 'market') {
-        result = orderBook.placeMarketOrder(data.side, data.quantity);
+      if (type === 'market') {
+        result = orderBook.placeMarketOrder(side, quantity);
       } else {
-        result = orderBook.placeLimitOrder(data.side, data.price, data.quantity);
+        const price = Number(data.price);
+        if (!Number.isFinite(price) || price <= 0) {
+          throw new Error('Invalid price: must be a positive number');
+        }
+        result = orderBook.placeLimitOrder(side, price, quantity);
       }
 
       socket.emit('order-result', {
@@ -206,19 +224,25 @@ io.on('connection', (socket) => {
   });
 
   socket.on('cancel-order', (data) => {
-    const order = orderBook.cancelOrder(data.orderId);
+    const orderId = Number(data && data.orderId);
+    if (!Number.isFinite(orderId)) {
+      socket.emit('order-cancelled', { success: false, orderId: data && data.orderId });
+      return;
+    }
+
+    const order = orderBook.cancelOrder(orderId);
     socket.emit('order-cancelled', {
       success: !!order,
-      orderId: data.orderId
+      orderId
     });
   });
 
   // ── Handle symbol change ──
 
   socket.on('change-symbol', (data) => {
-    const newSymbol = data.symbol.toLowerCase();
-    if (!SUPPORTED_SYMBOLS.includes(newSymbol)) {
-      socket.emit('error', { message: `Unsupported symbol: ${newSymbol}` });
+    const newSymbol = (data && typeof data.symbol === 'string') ? data.symbol.toLowerCase() : null;
+    if (!newSymbol || !SUPPORTED_SYMBOLS.includes(newSymbol)) {
+      socket.emit('error', { message: `Unsupported symbol: ${newSymbol || '(none provided)'}` });
       return;
     }
 
