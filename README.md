@@ -1,6 +1,6 @@
 # Ladder
 
-![CI](https://github.com/AEdebug/Real-Time-Order-Book-Simulator-Visualizer/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/AEdebug/ladder/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)
 
 A real-time limit order book simulator and visualizer. Ladder connects to Binance's public market data over WebSockets, mirrors a live order book, and computes market microstructure metrics (spread, mid-price, order book imbalance, VWAP, rolling volatility) on top of it. You can also drop simulated limit and market orders onto the live book and watch them queue and fill.
