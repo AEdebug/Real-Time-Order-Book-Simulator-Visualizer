@@ -20,8 +20,14 @@
 const WebSocket = require('ws');
 const EventEmitter = require('events');
 
-// Binance WebSocket base URL
-const BINANCE_WS_BASE = 'wss://stream.binance.com:9443';
+// Binance WebSocket base URL.
+// NOTE: stream.binance.com is Binance's main trading-account WS endpoint and
+// blocks connections from US-hosted cloud IPs (regulatory geo-blocking) —
+// which is exactly what most free hosting tiers (e.g. Render's default
+// Oregon region) look like. data-stream.binance.vision is Binance's
+// dedicated market-data-only endpoint: same public depth/trade streams,
+// no account/geo restrictions, built for this exact use case.
+const BINANCE_WS_BASE = 'wss://data-stream.binance.vision';
 
 class BinanceFeed extends EventEmitter {
   /**

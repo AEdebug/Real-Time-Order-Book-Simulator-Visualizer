@@ -1,7 +1,7 @@
 {
-  "name": "orderbook-simulator",
+  "name": "ladder",
   "version": "1.0.0",
-  "description": "Real-Time Order Book Simulator & Visualizer — connects to Binance WebSocket feed, maintains a custom limit order book engine, and visualizes market microstructure in a real-time dashboard.",
+  "description": "Ladder — a real-time limit order book simulator and visualizer. Connects to Binance's public WebSocket feed, maintains a price-time-priority order book engine, and visualizes market microstructure in a real-time dashboard.",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",

@@ -266,14 +266,17 @@ io.on('connection', (socket) => {
 // ─────────────────────────────────────────────────────────────
 
 server.listen(PORT, () => {
+  const w = 54; // inner banner width
+  const row = (text) => `║  ${text.padEnd(w - 2)}║`;
+
   console.log('');
-  console.log('╔══════════════════════════════════════════════════════╗');
-  console.log('║         ORDER BOOK SIMULATOR & VISUALIZER           ║');
-  console.log('╠══════════════════════════════════════════════════════╣');
-  console.log(`║  Dashboard:  http://localhost:${PORT}                  ║`);
-  console.log(`║  Symbol:     ${DEFAULT_SYMBOL.toUpperCase().padEnd(40)}║`);
-  console.log(`║  Update Rate: ${FRONTEND_UPDATE_INTERVAL}ms (${(1000/FRONTEND_UPDATE_INTERVAL).toFixed(0)} fps)                          ║`);
-  console.log('╚══════════════════════════════════════════════════════╝');
+  console.log(`╔${'═'.repeat(w)}╗`);
+  console.log(row('LADDER — Real-Time Order Book Simulator'));
+  console.log(`╠${'═'.repeat(w)}╣`);
+  console.log(row(`Dashboard:   http://localhost:${PORT}`));
+  console.log(row(`Symbol:      ${DEFAULT_SYMBOL.toUpperCase()}`));
+  console.log(row(`Update Rate: ${FRONTEND_UPDATE_INTERVAL}ms (${(1000 / FRONTEND_UPDATE_INTERVAL).toFixed(0)} fps)`));
+  console.log(`╚${'═'.repeat(w)}╝`);
   console.log('');
 
   // Connect to Binance

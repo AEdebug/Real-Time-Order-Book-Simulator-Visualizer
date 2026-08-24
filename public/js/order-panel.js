@@ -206,7 +206,9 @@ class OrderPanel {
       <div class="active-order ${o.side}">
         <span class="order-side">${o.side.toUpperCase()}</span>
         <span class="order-detail">${Utils.formatQty(o.remainingQty)} @ ${Utils.formatPrice(o.price)}</span>
-        <button class="cancel-btn" data-id="${o.id}">✕</button>
+        <button class="cancel-btn" data-id="${o.id}" aria-label="Cancel order">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
     `).join('');
 

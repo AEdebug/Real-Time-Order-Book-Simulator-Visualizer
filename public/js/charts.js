@@ -22,8 +22,8 @@ class TimeSeriesChart {
     this.width = 0;
     this.height = 0;
 
-    this.lineColor = options.lineColor || Utils.colors.yellow;
-    this.fillColor = options.fillColor || Utils.colors.yellowDim;
+    this.lineColor = options.lineColor || Utils.colors.accent;
+    this.fillColor = options.fillColor || Utils.colors.accentDim;
     this.label = options.label || '';
     this.formatValue = options.formatValue || ((v) => v.toFixed(2));
     this.showZeroLine = options.showZeroLine || false;
@@ -240,24 +240,24 @@ class TimeSeriesChart {
 class ChartsManager {
   constructor() {
     this.spreadChart = new TimeSeriesChart('spread-canvas', {
-      lineColor: Utils.colors.yellow,
-      fillColor: Utils.colors.yellowDim,
+      lineColor: Utils.colors.accent,
+      fillColor: Utils.colors.accentDim,
       label: 'Spread (BPS)',
       formatValue: (v) => v.toFixed(2) + ' bps',
       showZeroLine: false
     });
 
     this.imbalanceChart = new TimeSeriesChart('imbalance-canvas', {
-      lineColor: Utils.colors.blue,
-      fillColor: Utils.colors.blueDim,
+      lineColor: Utils.colors.accent,
+      fillColor: Utils.colors.accentDim,
       label: 'Imbalance',
       formatValue: (v) => (v >= 0 ? '+' : '') + v.toFixed(3),
       bipolar: true
     });
 
     this.volumeChart = new TimeSeriesChart('volume-canvas', {
-      lineColor: Utils.colors.purple,
-      fillColor: 'rgba(179, 136, 255, 0.15)',
+      lineColor: Utils.colors.accent,
+      fillColor: 'rgba(217, 164, 65, 0.15)',
       label: 'Volume',
       formatValue: (v) => Utils.formatQtyShort(v)
     });

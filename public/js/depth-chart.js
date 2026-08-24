@@ -175,7 +175,7 @@ class DepthChart {
                       this.currentAsks[0]?.price) / 2;
     if (midPrice) {
       const midX = scaleX(midPrice);
-      ctx.strokeStyle = Utils.colors.blueDim;
+      ctx.strokeStyle = Utils.colors.accentDim;
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -185,7 +185,7 @@ class DepthChart {
       ctx.setLineDash([]);
 
       // Mid price label
-      ctx.fillStyle = Utils.colors.blue;
+      ctx.fillStyle = Utils.colors.accent;
       ctx.font = '10px "JetBrains Mono"';
       ctx.textAlign = 'center';
       ctx.fillText(Utils.formatPrice(midPrice), midX, padding.top - 6);

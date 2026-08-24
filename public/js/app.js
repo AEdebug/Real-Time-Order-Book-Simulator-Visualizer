@@ -40,13 +40,13 @@
 
   // ── Connection Events ──
   socket.on('connect', () => {
-    console.log('✓ Connected to server');
+    console.log('Connected to server');
     connectionStatus.className = 'connection-status connected';
     statusText.textContent = 'Connected';
   });
 
   socket.on('disconnect', () => {
-    console.log('✗ Disconnected');
+    console.log('Disconnected');
     connectionStatus.className = 'connection-status disconnected';
     statusText.textContent = 'Disconnected';
   });
@@ -170,6 +170,6 @@
     console.error('Socket error:', err);
   });
 
-  console.log('📊 Order Book Simulator — Dashboard loaded');
+  console.log('Ladder — dashboard loaded');
   console.log('Connecting to server...');
 })();

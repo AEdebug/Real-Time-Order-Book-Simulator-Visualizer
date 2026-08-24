@@ -1,9 +1,9 @@
-# Real-Time Order Book Simulator & Visualizer
+# Ladder
 
 ![CI](https://github.com/AEdebug/Real-Time-Order-Book-Simulator-Visualizer/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)
 
-A real-time trading terminal that connects to Binance's public market data over WebSockets, mirrors a live limit order book, and computes market microstructure metrics (spread, mid-price, order book imbalance, VWAP, rolling volatility) on top of it. You can also drop simulated limit and market orders onto the live book and watch them queue and fill.
+A real-time limit order book simulator and visualizer. Ladder connects to Binance's public market data over WebSockets, mirrors a live order book, and computes market microstructure metrics (spread, mid-price, order book imbalance, VWAP, rolling volatility) on top of it. You can also drop simulated limit and market orders onto the live book and watch them queue and fill.
 
 <!-- TODO: add a screenshot or short GIF of the dashboard here once hosted -->
 <!-- ![Dashboard screenshot](docs/screenshot.png) -->
@@ -21,7 +21,7 @@ A real-time trading terminal that connects to Binance's public market data over 
 ## Technology Stack
 
 *   **Backend**: Node.js, Express, Socket.IO
-*   **Data feed**: Binance public WebSockets (`stream.binance.com`) — no API key required
+*   **Data feed**: Binance's public market-data WebSocket (`data-stream.binance.vision`) — no API key required. This is Binance's dedicated market-data-only endpoint (as opposed to `stream.binance.com`, which is tied to the main trading site and geo-blocks connections from most cloud hosting regions).
 *   **Frontend**: Vanilla HTML/CSS/JavaScript, HTML5 Canvas rendering
 *   **Tests**: Jest
 
@@ -83,7 +83,7 @@ Being upfront about these because they were deliberate simplifications, not over
 ## Project Structure
 
 *   `/server` — Node.js backend: `index.js` (Express/Socket.IO entry point), `binance-feed.js` (WebSocket ingestion + reconnect logic), `orderbook-engine.js` (order book + matching engine), `metrics.js` (analytics engine).
-*   `/public` — frontend dashboard: `index.html`, `css/styles.css`, and JS modules (`orderbook-view.js`, `depth-chart.js`, `charts.js`, `trade-tape.js`, `order-panel.js`, `utils.js`).
+*   `/public` — frontend dashboard: `index.html`, `logo.svg`, `css/styles.css`, and JS modules (`orderbook-view.js`, `depth-chart.js`, `charts.js`, `trade-tape.js`, `order-panel.js`, `utils.js`).
 *   `/test` — Jest unit tests for the order book engine (matching, partial fills, cancellation, queue-depletion behavior).
 
 ## License

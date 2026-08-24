@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────
-   ORDER BOOK SIMULATOR — Dark Trading Terminal Theme
+   LADDER — Dark Trading Terminal Theme
    ───────────────────────────────────────────────────────── */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
@@ -7,48 +7,39 @@
 /* ── CSS Variables ── */
 :root {
   /* Background layers */
-  --bg-primary: #060a12;
-  --bg-secondary: #0c1120;
-  --bg-tertiary: #111827;
-  --bg-card: rgba(15, 23, 42, 0.75);
-  --bg-card-hover: rgba(20, 30, 55, 0.85);
+  --bg-primary: #0a0d12;
+  --bg-secondary: #10141b;
+  --bg-tertiary: #161b24;
+  --bg-card: rgba(19, 23, 31, 0.75);
+  --bg-card-hover: rgba(26, 31, 41, 0.85);
 
-  /* Accent colors */
-  --green: #00e676;
-  --green-dim: #00c853;
-  --green-glow: rgba(0, 230, 118, 0.15);
-  --green-bg: rgba(0, 230, 118, 0.06);
+  /* Semantic colors — bid/ask, buy/sell, positive/negative */
+  --green: #3fb950;
+  --green-dim: #2ea043;
+  --green-bg: rgba(63, 185, 80, 0.08);
 
-  --red: #ff1744;
-  --red-dim: #d50000;
-  --red-glow: rgba(255, 23, 68, 0.15);
-  --red-bg: rgba(255, 23, 68, 0.06);
+  --red: #f85149;
+  --red-dim: #da3633;
+  --red-bg: rgba(248, 81, 73, 0.08);
 
-  --blue: #448aff;
-  --blue-dim: #2979ff;
-  --blue-glow: rgba(68, 138, 255, 0.15);
-
-  --yellow: #ffd740;
-  --yellow-dim: #ffab00;
-
-  --purple: #b388ff;
-  --cyan: #18ffff;
+  /* Single accent for everything non-semantic — a muted amber, a nod to
+     classic terminal displays rather than a generic SaaS blue */
+  --accent: #d9a441;
+  --accent-dim: #b8863a;
+  --accent-bg: rgba(217, 164, 65, 0.08);
 
   /* Text */
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --text-dim: #334155;
+  --text-primary: #e6e8eb;
+  --text-secondary: #8b93a1;
+  --text-muted: #565d68;
+  --text-dim: #33373f;
 
   /* Borders */
-  --border-primary: rgba(51, 65, 85, 0.5);
-  --border-subtle: rgba(51, 65, 85, 0.25);
-  --border-glow: rgba(68, 138, 255, 0.2);
+  --border-primary: rgba(139, 147, 161, 0.14);
+  --border-subtle: rgba(139, 147, 161, 0.08);
 
   /* Shadows */
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-glow-green: 0 0 20px rgba(0, 230, 118, 0.1);
-  --shadow-glow-red: 0 0 20px rgba(255, 23, 68, 0.1);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.45);
 
   /* Spacing */
   --gap: 10px;
@@ -119,7 +110,7 @@ body {
   font-family: var(--font-mono);
   font-weight: 600;
   font-size: 14px;
-  color: var(--blue);
+  color: var(--accent);
   letter-spacing: 0.5px;
 }
 
@@ -149,7 +140,7 @@ body {
 
 .symbol-selector select:hover,
 .symbol-selector select:focus {
-  border-color: var(--blue);
+  border-color: var(--accent);
 }
 
 .header-stats {
@@ -203,13 +194,13 @@ body {
 .connection-status.connected {
   background: var(--green-bg);
   color: var(--green);
-  border: 1px solid rgba(0, 230, 118, 0.2);
+  border: 1px solid rgba(63, 185, 80, 0.2);
 }
 
 .connection-status.disconnected {
   background: var(--red-bg);
   color: var(--red);
-  border: 1px solid rgba(255, 23, 68, 0.2);
+  border: 1px solid rgba(248, 81, 73, 0.2);
 }
 
 .status-dot {
@@ -319,7 +310,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 6px 14px;
-  background: rgba(68, 138, 255, 0.05);
+  background: rgba(217, 164, 65, 0.05);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
@@ -329,7 +320,7 @@ body {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
-  color: var(--yellow);
+  color: var(--accent);
 }
 
 .spread-label {
@@ -402,12 +393,12 @@ body {
 .ladder-row.flash-red { animation: flashRed 0.6s ease-out; }
 
 @keyframes flashGreen {
-  0% { background: rgba(0, 230, 118, 0.2); }
+  0% { background: rgba(63, 185, 80, 0.2); }
   100% { background: transparent; }
 }
 
 @keyframes flashRed {
-  0% { background: rgba(255, 23, 68, 0.2); }
+  0% { background: rgba(248, 81, 73, 0.2); }
   100% { background: transparent; }
 }
 
@@ -484,8 +475,8 @@ body {
 
 /* Whale trade highlight */
 .trade-row.whale {
-  background: rgba(255, 215, 64, 0.05);
-  border-left: 2px solid var(--yellow);
+  background: rgba(217, 164, 65, 0.05);
+  border-left: 2px solid var(--accent);
 }
 
 /* ── Bottom Row — Charts ── */
@@ -646,11 +637,11 @@ body {
 }
 
 .volume-bar-fill.buy-fill {
-  background: linear-gradient(90deg, rgba(0, 230, 118, 0.3), rgba(0, 230, 118, 0.6));
+  background: linear-gradient(90deg, rgba(63, 185, 80, 0.3), rgba(63, 185, 80, 0.6));
 }
 
 .volume-bar-fill.sell-fill {
-  background: linear-gradient(90deg, rgba(255, 23, 68, 0.3), rgba(255, 23, 68, 0.6));
+  background: linear-gradient(90deg, rgba(248, 81, 73, 0.3), rgba(248, 81, 73, 0.6));
 }
 
 .volume-bar-value {
@@ -678,7 +669,7 @@ body {
   width: 32px;
   height: 32px;
   border: 3px solid var(--border-primary);
-  border-top-color: var(--blue);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -759,14 +750,12 @@ body {
 
 .side-btn.active.buy {
   background: var(--green);
-  color: #000;
-  box-shadow: var(--shadow-glow-green);
+  color: #08110a;
 }
 
 .side-btn.active.sell {
   background: var(--red);
   color: #fff;
-  box-shadow: var(--shadow-glow-red);
 }
 
 .type-btn.active {
@@ -791,7 +780,7 @@ body {
 }
 
 .input-group:focus-within {
-  border-color: var(--blue);
+  border-color: var(--accent);
 }
 
 .input-group label {
@@ -833,24 +822,24 @@ body {
 }
 
 .submit-btn.buy {
-  background: rgba(0, 230, 118, 0.15);
+  background: rgba(63, 185, 80, 0.15);
   color: var(--green);
-  border: 1px solid rgba(0, 230, 118, 0.3);
+  border: 1px solid rgba(63, 185, 80, 0.3);
 }
 
 .submit-btn.buy:hover {
-  background: rgba(0, 230, 118, 0.25);
+  background: rgba(63, 185, 80, 0.25);
   border-color: var(--green);
 }
 
 .submit-btn.sell {
-  background: rgba(255, 23, 68, 0.15);
+  background: rgba(248, 81, 73, 0.15);
   color: var(--red);
-  border: 1px solid rgba(255, 23, 68, 0.3);
+  border: 1px solid rgba(248, 81, 73, 0.3);
 }
 
 .submit-btn.sell:hover {
-  background: rgba(255, 23, 68, 0.25);
+  background: rgba(248, 81, 73, 0.25);
   border-color: var(--red);
 }
 
@@ -908,11 +897,14 @@ body {
 }
 
 .cancel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 2px 6px;
+  padding: 4px 6px;
   border-radius: 3px;
   transition: all 0.2s;
 }
@@ -975,6 +967,6 @@ body {
 }
 
 .order-notification.info {
-  border-left: 3px solid var(--blue);
-  color: var(--blue);
+  border-left: 3px solid var(--accent);
+  color: var(--accent);
 }

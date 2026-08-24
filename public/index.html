@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Real-time order book simulator and visualizer with live Binance market data, depth charts, and trade flow analysis.">
-  <title>Order Book Simulator</title>
+  <meta name="description" content="Ladder — a real-time limit order book simulator and visualizer with live Binance market data, depth charts, and trade flow analysis.">
+  <title>Ladder</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
 </head>
 <body>
 
@@ -15,8 +15,8 @@
   <header class="header">
     <div class="header-left">
       <div class="logo">
-        <span class="logo-icon">📊</span>
-        <span>ORDERBOOK</span>
+        <img src="logo.svg" alt="" class="logo-icon" width="18" height="18">
+        <span>LADDER</span>
       </div>
 
       <div class="symbol-selector">
@@ -42,11 +42,11 @@
       </div>
       <div class="header-stat">
         <span class="header-stat-label">Spread</span>
-        <span class="header-stat-value" id="h-spread" style="color: var(--yellow)">—</span>
+        <span class="header-stat-value" id="h-spread" style="color: var(--accent)">—</span>
       </div>
       <div class="header-stat">
         <span class="header-stat-label">Spread BPS</span>
-        <span class="header-stat-value" id="h-spread-bps" style="color: var(--yellow-dim)">—</span>
+        <span class="header-stat-value" id="h-spread-bps" style="color: var(--accent-dim)">—</span>
       </div>
       <div class="header-stat">
         <span class="header-stat-label">Imbalance</span>
@@ -57,8 +57,8 @@
         <span class="header-stat-value" id="h-updates" style="color: var(--text-secondary)">0</span>
       </div>
       <div class="header-stat">
-        <span class="header-stat-label" style="color:var(--blue)">ENGINE LATENCY</span>
-        <span class="header-stat-value" id="h-latency" style="color: var(--blue)">0 μs</span>
+        <span class="header-stat-label" style="color:var(--accent)">ENGINE LATENCY</span>
+        <span class="header-stat-value" id="h-latency" style="color: var(--accent)">0 μs</span>
       </div>
     </div>
 
@@ -173,7 +173,7 @@
     <div class="card order-panel" id="order-panel">
       <div class="card-header">
         <span class="card-title">Place Order</span>
-        <span class="card-badge" style="color:var(--blue)">SIMULATION</span>
+        <span class="card-badge" style="color:var(--accent)">SIMULATION</span>
       </div>
       <div class="card-body order-box">
         <div class="order-tabs">
