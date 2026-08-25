@@ -8,7 +8,7 @@ A real-time limit order book simulator and visualizer. Ladder connects to Binanc
 <!-- TODO: add a screenshot or short GIF of the dashboard here once hosted -->
 <!-- ![Dashboard screenshot](docs/screenshot.png) -->
 
-**Live demo:** _add your hosted URL here_
+**Live demo:** (https://real-time-order-book-simulator-visualizer.onrender.com)
 
 ## Features
 
